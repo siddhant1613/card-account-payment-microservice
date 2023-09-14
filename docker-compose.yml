@@ -1,0 +1,61 @@
+version: '3'
+services:
+  mongodb: 
+    image: mongo:latest
+    container_name: cardservicemongo
+    ports:
+      - "28017:27017"
+  rabbitmq:
+     image: rabbitmq:3.11.15-management
+     ports:
+      - "15672:15672"
+      - "5672:5672"
+  
+  accountholder-microservice:
+    build: ./accountHolderService
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mongodb
+      - eurekaserver-microservice
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-microservice:8761/eureka
+      EUREKA_CLIENT_FETCH_REGISTRY: true
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
+    links:
+      - eurekaserver-microservice
+  card-microservice:
+    build: ./cardService
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      - eurekaserver-microservice
+    environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-microservice:8761/eureka
+        EUREKA_CLIENT_FETCH_REGISTRY: true
+        EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
+    links:
+      - eurekaserver-microservice
+  payment-microservice:
+    build: ./paymentService
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongodb
+      - card-microservice
+      - accountholder-microservice
+      - eurekaserver-microservice
+      - rabbitmq
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-microservice:8761/eureka
+      EUREKA_CLIENT_FETCH_REGISTRY: true
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
+      SPRING_RABBITMQ_HOST: rabbitmq
+    links:
+      - eurekaserver-microservice
+      - rabbitmq
+  eurekaserver-microservice:
+    build: ./eurekaServer
+    ports:
+      - "8761:8761"
