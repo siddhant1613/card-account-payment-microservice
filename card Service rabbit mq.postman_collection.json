@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "f87dabba-d9b0-4081-9aff-4a00317b84e0",
+		"name": "card Service rabbit mq",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Internal Services",
+			"item": [
+				{
+					"name": "addCard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardNumber\" : \"9090 8889 6767 4567\",\r\n    \"cardHolderName\" : \"Hari shayam\",\r\n    \"cvv\" : \"123\",\r\n    \"expiringDate\":\"2024-09-11\",\r\n    \"fatherName\":\"Rakesh\",\r\n    \"status\": true\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/addcard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"addcard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCardByCardNumber",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/getcardbycardnumber/9090 8889 6767 4507",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"getcardbycardnumber",
+								"9090 8889 6767 4507"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCustomer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"shayam sharma\",\r\n    \"accountNumber\": \"1234098789012\",\r\n    \"cardNumber\": \"9090 8989 6767 7878\",\r\n    \"balance\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/addcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"addcustomer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exposed Services",
+			"item": [
+				{
+					"name": "payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardNumber\": \"9090 8989 6767 4545\",\r\n    \"cardHolderName\": \"Ram sharma\",\r\n    \"cvv\": \"123\",\r\n    \"expiringDate\": \"2024-09-11\",\r\n    \"receiverName\": \"Amazon\",\r\n    \"amount\": 10,\r\n    \"merchantTransactionId\": \"{{$guid}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTransaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/getcardtransactionbymerchanttransactionid/paytm098a7659002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"getcardtransactionbymerchanttransactionid",
+								"paytm098a7659002"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
